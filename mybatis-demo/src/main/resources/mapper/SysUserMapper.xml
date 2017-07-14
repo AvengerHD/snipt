@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.mybatis.SysUserMapper">
+    <resultMap id="BaseResultMap" type="pojo.mybatis.SysUser">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_password" jdbcType="VARCHAR" property="userPassword"/>
+        <result column="user_email" jdbcType="VARCHAR" property="userEmail"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="user_info" jdbcType="LONGVARCHAR" property="userInfo"/>
+        <result column="head_img" jdbcType="LONGVARBINARY" property="headImg"/>
+    </resultMap>
+
+    <sql id="BaseColumnList">
+    id, user_name, user_password, user_email, user_info, head_img, create_time
+  </sql>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"/>
+        from sys_user where id = #{id}
+    </select>
+
+    <!--插入返回主键自增值 -->
+    <insert id="insertOne" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user
+        (<include refid="BaseColumnList"/>)
+        values(
+        #{id}, #{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg}, #{createTime}
+        )
+    </insert>
+
+    <select id="selectRolesByUserIdAndRoleEnabled" resultType="SysRole">
+    select
+          r.id, r.role_name, r.enabled, r.create_by, r.create_time
+    from sys_user u, sys_user_role ur, sys_role r
+    where u.id = #{userId}
+    and u.id = ur.user_id
+    and ur.role_id = r.id
+    and r.enabled= #{enabled}
+  </select>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!-- 自动读取外部配置文件，由于已经集成了maven， 配置项在maven中直接读取 -->
+    <!-- <properties resource="src/main/resources/config.properties" /> -->
+
+    <context id="mysql" targetRuntime="Mybatis3Simple" defaultModelType="flat">
+        <property name="autoDelimitKeywords" value="true"></property>
+        <property name="beginningDelimiter" value="`"></property>
+        <property name="endingDelimiter" value="`"></property>
+
+
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+        <!--<plugin type="org.mybatis.generator.plugins.MapperConfigPlugin">-->
+            <!--<property name="targetPackage" value="."></property>-->
+            <!--<property name="targetProject" value="${targetResources}"></property>-->
+        <!--</plugin>-->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <!-- caseSensitive默认false，当数据库表名区分大小写时，可以将该属性设置为true -->
+            <property name="caseSensitive" value="true"/>
+            <property name="beginningDelimiter" value="`"/>
+            <property name="endingDelimiter" value="`"/>
+        </plugin>
+
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <property name="suppressAllComments" value="false" />
+            <property name="addRemarkComments" value="true" />
+        </commentGenerator>
+
+        <jdbcConnection driverClass="${driverClass}" connectionURL="${connectionURL}"
+                        userId="${userId}" password="${password}" />
+
+        <javaTypeResolver>
+            <!-- This property is used to specify whether MyBatis Generator should
+                force the use of java.math.BigDecimal for DECIMAL and NUMERIC fields, -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="${pojoPackage}" targetProject="${targetProject}">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 生成映射文件的包名和位置 -->
+        <sqlMapGenerator targetPackage="${mapperDir}" targetProject="${targetResources}"/>
+
+        <!-- 生成DAO的包名和位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="${daoPackage}" targetProject="${targetProject}">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+
+        <table catalog="mybatis" tableName="%">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+    </context>
+</generatorConfiguration>
